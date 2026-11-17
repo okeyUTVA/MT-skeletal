@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTerm Test #704 Review | Strand 5: The Skeletal System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for clean clinical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#0f2942',
+                            900: '#091b2e',
+                        },
+                        teal: {
+                            600: '#0d9488',
+                            700: '#0f766e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 3D Flashcard Flip Mechanics */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        /* Subtle custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- Top Clinical Header -->
+    <header class="bg-navy-900 text-white shadow-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-teal-600/20 border border-teal-400/30 flex items-center justify-center text-teal-300 shrink-0">
+                        <i class="fa-solid fa-bone text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-teal-600 text-white">Utah CTE Test #704</span>
+                            <span class="text-xs text-slate-300 font-medium">Cut Score: 74%</span>
+                        </div>
+                        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white mt-0.5">
+                            Strand 5: The Skeletal System
+                        </h1>
+                    </div>
+                </div>
+                
+                <!-- Mastery Progress Pill -->
+                <div class="flex items-center gap-3 bg-navy-800/90 border border-slate-700/80 rounded-xl px-4 py-2 self-start md:self-auto">
+                    <div class="text-right">
+                        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Flashcard Mastery</div>
+                        <div class="text-sm font-bold text-teal-300"><span id="header-mastered-count">0</span> / <span id="header-total-count">109</span> Terms</div>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center relative">
+                        <i class="fa-solid fa-award text-amber-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex overflow-x-auto gap-1.5 mt-4 pt-3 border-t border-slate-800 no-scrollbar" aria-label="Study Modes">
+                <button onclick="switchTab('study')" id="tab-study" class="nav-btn active flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all bg-teal-600 text-white shadow-sm">
+                    <i class="fa-solid fa-book-medical"></i> Study Guide
+                </button>
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all text-slate-300 hover:bg-navy-800 hover:text-white">
+                    <i class="fa-solid fa-layer-group"></i> Flashcards
+                </button>
+                <button onclick="switchTab('builder')" id="tab-builder" class="nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all text-slate-300 hover:bg-navy-800 hover:text-white">
+                    <i class="fa-solid fa-puzzle-piece"></i> Word-Building Lab
+                </button>
+                <button onclick="switchTab('matching')" id="tab-matching" class="nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all text-slate-300 hover:bg-navy-800 hover:text-white">
+                    <i class="fa-solid fa-bolt"></i> Speed Matching
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all text-slate-300 hover:bg-navy-800 hover:text-white">
+                    <i class="fa-solid fa-clipboard-check"></i> Practice Exam
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ==========================================
+             TAB 1: STUDY GUIDE / REFERENCE
+        =========================================== -->
+        <section id="view-study" class="tab-view space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-navy-900">Complete Strand 5 Standards Reference</h2>
+                        <p class="text-sm text-slate-500">All 109 required abbreviations, prefixes, roots, suffixes, and clinical terms from the 2026 Utah CTE Standards.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button id="toggle-blur-btn" onclick="toggleSelfTestBlur()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 transition">
+                            <i class="fa-solid fa-eye-slash text-teal-600"></i>
+                            <span>Hide Definitions (Self-Test)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search & Standard Filter Controls -->
+                <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col md:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="study-search" oninput="renderStudyGuide()" placeholder="Search term, root, abbreviation, or definition..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none text-sm">
+                    </div>
+                    <div class="flex flex-wrap gap-1.5" id="study-filters">
+                        <button onclick="setStudyFilter('ALL')" data-filter="ALL" class="study-filter-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-navy-900 text-white">All (109)</button>
+                        <button onclick="setStudyFilter('Std 1: Abbreviations')" data-filter="Std 1: Abbreviations" class="study-filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Std 1: Abbrev (14)</button>
+                        <button onclick="setStudyFilter('Std 2: Prefixes')" data-filter="Std 2: Prefixes" class="study-filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Std 2: Prefixes (1)</button>
+                        <button onclick="setStudyFilter('Std 3: Word Roots')" data-filter="Std 3: Word Roots" class="study-filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Std 3: Roots (49)</button>
+                        <button onclick="setStudyFilter('Std 4: Suffixes')" data-filter="Std 4: Suffixes" class="study-filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Std 4: Suffixes (6)</button>
+                        <button onclick="setStudyFilter('Std 5: Clinical Terms')" data-filter="Std 5: Clinical Terms" class="study-filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Std 5: Clinical (39)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Cards Grid -->
+            <div id="study-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 2: INTERACTIVE FLASHCARDS
+        =========================================== -->
+        <section id="view-flashcards" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-navy-900">Active Recall Flashcards</h2>
+                        <p class="text-sm text-slate-500">Click card or press <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs font-mono">Space</kbd> to flip. Use <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs font-mono">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs font-mono">→</kbd> to navigate.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select id="fc-category-select" onchange="initFlashcardDeck()" class="px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-white text-slate-700 focus:ring-2 focus:ring-teal-500 outline-none">
+                            <option value="ALL">All Strand 5 Terms (109)</option>
+                            <option value="STILL_LEARNING">Still Learning Only</option>
+                            <option value="Std 1: Abbreviations">Std 1: Abbreviations (14)</option>
+                            <option value="AFFIXES">Std 2 & 4: Prefixes & Suffixes (7)</option>
+                            <option value="Std 3: Word Roots">Std 3: Word Roots / Combining Forms (49)</option>
+                            <option value="Std 5: Clinical Terms">Std 5: Clinical Terms & Procedures (39)</option>
+                        </select>
+                        <button onclick="shuffleFlashcards()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold flex items-center gap-2 transition">
+                            <i class="fa-solid fa-shuffle text-teal-600"></i> Shuffle
+                        </button>
+                        <button onclick="resetMastery()" class="px-3.5 py-2.5 rounded-xl border border-slate-200 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 text-slate-500 text-sm font-semibold transition" title="Reset Mastery Progress">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flashcard Stage -->
+            <div class="max-w-2xl mx-auto">
+                <div class="flex items-center justify-between text-sm font-semibold text-slate-600 mb-3 px-1">
+                    <span id="fc-counter">Card 1 of 109</span>
+                    <span id="fc-status-badge" class="px-2.5 py-0.5 rounded-full text-xs bg-amber-100 text-amber-800">Still Learning</span>
+                </div>
+
+                <!-- 3D Card Container -->
+                <div class="perspective-1000 w-full h-80 sm:h-96 cursor-pointer select-none" onclick="flipFlashcard()">
+                    <div id="fc-inner" class="relative w-full h-full transition-transform duration-500 transform-style-3d">
+                        <!-- Front Face -->
+                        <div class="absolute inset-0 backface-hidden bg-white rounded-3xl shadow-md border-2 border-slate-200 p-8 flex flex-col justify-between items-center text-center">
+                            <span id="fc-front-cat" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-teal-50 text-teal-700 border border-teal-200">
+                                Std 3: Word Roots
+                            </span>
+                            <div class="my-auto">
+                                <h3 id="fc-front-text" class="text-3xl sm:text-4xl font-extrabold text-navy-900 tracking-tight font-mono">
+                                    arthr/o
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-4 font-medium uppercase tracking-widest">Click or Press Space to Reveal</p>
+                            </div>
+                            <div class="w-full flex justify-center text-slate-300">
+                                <i class="fa-solid fa-repeat"></i>
+                            </div>
+                        </div>
+
+                        <!-- Back Face -->
+                        <div class="absolute inset-0 backface-hidden rotate-y-180 bg-navy-900 text-white rounded-3xl shadow-lg border-2 border-teal-500/40 p-8 flex flex-col justify-between items-center text-center">
+                            <span id="fc-back-term" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-teal-600/30 text-teal-300 border border-teal-500/30">
+                                arthr/o
+                            </span>
+                            <div class="my-auto">
+                                <p id="fc-back-text" class="text-2xl sm:text-3xl font-bold text-white leading-snug">
+                                    joint
+                                </p>
+                                <p id="fc-back-hint" class="text-sm text-teal-200/80 mt-3 italic"></p>
+                            </div>
+                            <div class="text-xs text-slate-400">Strand 5: Skeletal System</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flashcard Controls -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+                    <button onclick="prevFlashcard()" class="p-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition">
+                        <i class="fa-solid fa-arrow-left"></i> Previous
+                    </button>
+                    <button onclick="markFlashcard(false)" class="p-3.5 rounded-xl bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 font-bold text-sm flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-clock"></i> Still Learning
+                    </button>
+                    <button onclick="markFlashcard(true)" class="p-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition">
+                        <i class="fa-solid fa-check"></i> Mastered
+                    </button>
+                    <button onclick="nextFlashcard()" class="p-3.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition">
+                        Next <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 3: WORD-BUILDING LAB
+        =========================================== -->
+        <section id="view-builder" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-teal-100 text-teal-800">Strand 1 + Strand 5 Rules</span>
+                            <span class="text-xs font-semibold text-slate-500">Challenge <span id="wb-progress">1 / 16</span></span>
+                        </div>
+                        <h2 class="text-xl font-extrabold text-navy-900 mt-1">Medical Word-Building Lab</h2>
+                        <p class="text-sm text-slate-500">Select the correct word parts in sequence, then choose the proper final spelling (remembering when to drop or keep the combining vowel <span class="font-mono font-bold text-teal-700">o</span>!).</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200">
+                        <i class="fa-solid fa-flask text-teal-600 text-lg"></i>
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold">Lab Score</div>
+                            <div class="text-base font-extrabold text-navy-900"><span id="wb-score">0</span> Solved</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Target Definition Prompt -->
+                <div class="my-6 bg-navy-900 text-white rounded-2xl p-6 text-center shadow-inner">
+                    <div class="text-xs uppercase tracking-widest text-teal-300 font-bold mb-1">Construct the Medical Term For:</div>
+                    <h3 id="wb-target-def" class="text-2xl sm:text-3xl font-extrabold">surgical puncture to remove fluid from the joint</h3>
+                    <p id="wb-target-hint" class="text-xs text-slate-300 mt-2">Requires: 1 Combining Form + 1 Suffix</p>
+                </div>
+
+                <!-- Selected Parts Assembly Tray -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">1. Assembly Tray (Click parts below to add in order)</span>
+                        <button onclick="clearBuilderTray()" class="text-xs font-semibold text-rose-600 hover:underline">Clear Tray</button>
+                    </div>
+                    <div id="wb-tray" class="min-h-[64px] p-3 rounded-xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-wrap items-center justify-center gap-2">
+                        <span class="text-sm text-slate-400 italic">Click word parts from the bank below...</span>
+                    </div>
+                </div>
+
+                <!-- Word Part Bank -->
+                <div class="mb-6">
+                    <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">2. Strand 5 Word Part Bank</div>
+                    <div id="wb-bank" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                        <!-- Word part buttons injected here -->
+                    </div>
+                </div>
+
+                <!-- Step 3: Combining Vowel / Final Spelling Check -->
+                <div id="wb-spelling-step" class="hidden pt-5 border-t border-slate-200 space-y-4">
+                    <div class="bg-teal-50 border border-teal-200 rounded-xl p-4">
+                        <h4 class="text-sm font-bold text-teal-900 flex items-center gap-2">
+                            <i class="fa-solid fa-spell-check"></i>
+                            3. Apply Strand 1 Combining Rules: Choose the correct final spelling!
+                        </h4>
+                        <p class="text-xs text-teal-700 mt-1">Rule check: Drop the combining vowel before a suffix starting with a vowel; keep it before a suffix starting with a consonant or between two roots.</p>
+                        <div id="wb-spelling-options" class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+                            <!-- Spelling options injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Banner -->
+                <div id="wb-feedback" class="hidden mt-5 p-4 rounded-xl border text-sm"></div>
+
+                <!-- Next Challenge Button -->
+                <div class="mt-6 flex justify-end">
+                    <button id="wb-next-btn" onclick="nextBuilderChallenge()" class="hidden px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm shadow-sm flex items-center gap-2 transition">
+                        Next Word Challenge <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 4: SPEED MATCHING GAME
+        =========================================== -->
+        <section id="view-matching" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-navy-900">Speed Matching Arena</h2>
+                        <p class="text-sm text-slate-500">Tap a medical term/abbreviation and its matching definition to clear the board.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <select id="match-filter" onchange="startNewMatchRound()" class="px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-white text-slate-700 outline-none">
+                            <option value="ALL">Mixed Strand 5 (All)</option>
+                            <option value="Std 1: Abbreviations">Std 1: Abbreviations</option>
+                            <option value="Std 3: Word Roots">Std 3: Word Roots</option>
+                            <option value="Std 5: Clinical Terms">Std 5: Clinical Terms</option>
+                        </select>
+                        <div class="px-4 py-2 rounded-xl bg-navy-900 text-white font-mono text-sm font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-stopwatch text-teal-400"></i>
+                            <span id="match-timer">00:00</span>
+                        </div>
+                        <div class="px-4 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm font-bold">
+                            Streak: <span id="match-streak">0</span>
+                        </div>
+                        <button onclick="startNewMatchRound()" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold transition">
+                            New Board
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matching Board -->
+            <div id="match-board" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Left Column: Terms -->
+                <div class="space-y-3">
+                    <div class="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">Terms / Roots / Abbreviations</div>
+                    <div id="match-terms-col" class="space-y-2.5"></div>
+                </div>
+                <!-- Right Column: Definitions -->
+                <div class="space-y-3">
+                    <div class="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">Definitions</div>
+                    <div id="match-defs-col" class="space-y-2.5"></div>
+                </div>
+            </div>
+
+            <!-- Round Complete Card -->
+            <div id="match-complete" class="hidden bg-white rounded-2xl border-2 border-teal-500 p-8 text-center max-w-lg mx-auto shadow-md">
+                <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mx-auto text-3xl mb-4">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold text-navy-900">Board Cleared!</h3>
+                <p class="text-slate-600 mt-1">You matched all 6 pairs in <span id="match-final-time" class="font-mono font-bold text-teal-700">00:00</span>.</p>
+                <button onclick="startNewMatchRound()" class="mt-6 px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm shadow-sm transition">
+                    Play Another Round
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 5: STATE EXAM PRACTICE QUIZ
+        =========================================== -->
+        <section id="view-quiz" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 max-w-4xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-navy-900 text-white">Utah CTE Test #704 Simulation</span>
+                        <h2 class="text-xl font-extrabold text-navy-900 mt-1">Strand 5 Self-Grading Practice Exam</h2>
+                        <p class="text-sm text-slate-500">18 state-exam style questions testing clinical scenarios, abbreviations, word parts, and spelling rules. Passing cut score: <strong>74%</strong>.</p>
+                    </div>
+                    <button onclick="resetQuiz()" class="px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold self-start sm:self-auto transition">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Restart Quiz
+                    </button>
+                </div>
+
+                <!-- Quiz Score Banner (Shown upon submission) -->
+                <div id="quiz-results-banner" class="hidden my-6 p-6 rounded-2xl border-2"></div>
+
+                <!-- Questions List -->
+                <div id="quiz-questions-container" class="divide-y divide-slate-100">
+                    <!-- Rendered via JS -->
+                </div>
+
+                <!-- Submit Quiz Button -->
+                <div class="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span id="quiz-answered-status" class="text-sm font-semibold text-slate-500">0 of 18 questions answered</span>
+                    <button id="submit-quiz-btn" onclick="gradeQuiz()" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-sm shadow-md transition">
+                        Submit & Grade Practice Exam
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-5 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+            <div>Aligned to <strong>Utah CTE Medical Terminology Strands & Standards (Revised Aug 2025 / Test #704)</strong></div>
+            <div>Strand 5: The Skeletal System • Self-Contained Review Module</div>
+        </div>
+    </footer>
+
+    <!-- Application Logic & Complete Strand 5 Dataset -->
+    <script>
+        // =========================================================================
+        // 1. COMPLETE STRAND 5 DATASET (ALL 109 EXACT ITEMS FROM STANDARDS DOC)
+        // =========================================================================
+        const strand5Data = [
+            // Standard 1: Abbreviations (14)
+            { id: 's1-1', category: 'Std 1: Abbreviations', term: 'ACL', definition: 'anterior cruciate ligament' },
+            { id: 's1-2', category: 'Std 1: Abbreviations', term: 'amb', definition: 'ambulate, ambulatory' },
+            { id: 's1-3', category: 'Std 1: Abbreviations', term: 'B', definition: 'bilateral' },
+            { id: 's1-4', category: 'Std 1: Abbreviations', term: 'Fx', definition: 'fracture' },
+            { id: 's1-5', category: 'Std 1: Abbreviations', term: 'L', definition: 'left' },
+            { id: 's1-6', category: 'Std 1: Abbreviations', term: 'LCL', definition: 'lateral collateral ligament' },
+            { id: 's1-7', category: 'Std 1: Abbreviations', term: 'MCL', definition: 'medial collateral ligament' },
+            { id: 's1-8', category: 'Std 1: Abbreviations', term: 'OA', definition: 'osteoarthritis' },
+            { id: 's1-9', category: 'Std 1: Abbreviations', term: 'PCL', definition: 'posterior cruciate ligament' },
+            { id: 's1-10', category: 'Std 1: Abbreviations', term: 'POLICE', definition: 'protection, optimal loading, ice, compression, elevation' },
+            { id: 's1-11', category: 'Std 1: Abbreviations', term: 'R', definition: 'right' },
+            { id: 's1-12', category: 'Std 1: Abbreviations', term: 'RA', definition: 'rheumatoid arthritis' },
+            { id: 's1-13', category: 'Std 1: Abbreviations', term: 'ROM', definition: 'range of motion' },
+            { id: 's1-14', category: 'Std 1: Abbreviations', term: 'RICE', definition: 'rest, ice, compression, elevation' },
+
+            // Standard 2: Prefixes (1)
+            { id: 's2-1', category: 'Std 2: Prefixes', term: 'hemi-', definition: 'one half' },
+
+            // Standard 3: Word Roots / Combining Forms (49)
+            { id: 's3-1', category: 'Std 3: Word Roots', term: 'ankyl/o', definition: 'stiff, crooked, bent' },
+            { id: 's3-2', category: 'Std 3: Word Roots', term: 'arthr/o', definition: 'joint' },
+            { id: 's3-3', category: 'Std 3: Word Roots', term: 'articul/o', definition: 'joint' },
+            { id: 's3-4', category: 'Std 3: Word Roots', term: 'brachi/o', definition: 'arm' },
+            { id: 's3-5', category: 'Std 3: Word Roots', term: 'blast', definition: 'embryonic; tissue building cell' },
+            { id: 's3-6', category: 'Std 3: Word Roots', term: 'burs/o', definition: 'bursa (fluid filled sac)' },
+            { id: 's3-7', category: 'Std 3: Word Roots', term: 'calcane/o', definition: 'calcaneus (heel bone)' },
+            { id: 's3-8', category: 'Std 3: Word Roots', term: 'carp/o', definition: 'carpals (wrist bones)' },
+            { id: 's3-9', category: 'Std 3: Word Roots', term: 'cervic/o', definition: 'neck or neck of the uterus' },
+            { id: 's3-10', category: 'Std 3: Word Roots', term: 'chondr/o', definition: 'cartilage' },
+            { id: 's3-11', category: 'Std 3: Word Roots', term: 'clavicul/o', definition: 'clavicle' },
+            { id: 's3-12', category: 'Std 3: Word Roots', term: 'cost/o', definition: 'rib' },
+            { id: 's3-13', category: 'Std 3: Word Roots', term: 'crani/o', definition: 'cranium, head, skull' },
+            { id: 's3-14', category: 'Std 3: Word Roots', term: 'cubit/o', definition: 'elbow' },
+            { id: 's3-15', category: 'Std 3: Word Roots', term: 'dactyl/o', definition: 'finger/toes' },
+            { id: 's3-16', category: 'Std 3: Word Roots', term: 'femer/o', definition: 'femur (upper leg bone)' },
+            { id: 's3-17', category: 'Std 3: Word Roots', term: 'fibul/o', definition: 'fibula (lower leg bone)' },
+            { id: 's3-18', category: 'Std 3: Word Roots', term: 'humer/o', definition: 'humerus' },
+            { id: 's3-19', category: 'Std 3: Word Roots', term: 'hy/o', definition: 'u-shaped' },
+            { id: 's3-20', category: 'Std 3: Word Roots', term: 'ili/o', definition: 'ilium (hip bone)' },
+            { id: 's3-21', category: 'Std 3: Word Roots', term: 'ischi/o', definition: 'ischium; pelvic bone' },
+            { id: 's3-22', category: 'Std 3: Word Roots', term: 'kinesi/o', definition: 'study of movement or motion' },
+            { id: 's3-23', category: 'Std 3: Word Roots', term: 'kyph/o', definition: 'abnormal curvature; hump of the spine' },
+            { id: 's3-24', category: 'Std 3: Word Roots', term: 'lamin/o', definition: 'vertebral lamina' },
+            { id: 's3-25', category: 'Std 3: Word Roots', term: 'ligament/o', definition: 'ligament' },
+            { id: 's3-26', category: 'Std 3: Word Roots', term: 'lord/o', definition: 'curve, swayback' },
+            { id: 's3-27', category: 'Std 3: Word Roots', term: 'lumb/o', definition: 'lumbar, lower back' },
+            { id: 's3-28', category: 'Std 3: Word Roots', term: 'mandibul/o', definition: 'mandible; lower jaw' },
+            { id: 's3-29', category: 'Std 3: Word Roots', term: 'menisc/o', definition: 'meniscus' },
+            { id: 's3-30', category: 'Std 3: Word Roots', term: 'myel/o', definition: 'spinal cord, bone marrow' },
+            { id: 's3-31', category: 'Std 3: Word Roots', term: 'orth/o', definition: 'straight' },
+            { id: 's3-32', category: 'Std 3: Word Roots', term: 'oste/o', definition: 'bone' },
+            { id: 's3-33', category: 'Std 3: Word Roots', term: 'patell/o', definition: 'patella' },
+            { id: 's3-34', category: 'Std 3: Word Roots', term: 'ped', definition: 'foot, child' },
+            { id: 's3-35', category: 'Std 3: Word Roots', term: 'pelv/i', definition: 'pelvis' },
+            { id: 's3-36', category: 'Std 3: Word Roots', term: 'phalang/o', definition: 'phalanges' },
+            { id: 's3-37', category: 'Std 3: Word Roots', term: 'physi/o', definition: 'physical, natural' },
+            { id: 's3-38', category: 'Std 3: Word Roots', term: 'por/o', definition: 'pore, porous' },
+            { id: 's3-39', category: 'Std 3: Word Roots', term: 'pub/o', definition: 'pubis' },
+            { id: 's3-40', category: 'Std 3: Word Roots', term: 'scoli/o', definition: 'crooked, curved' },
+            { id: 's3-41', category: 'Std 3: Word Roots', term: 'spondyl/o', definition: 'vertebrae, spine' },
+            { id: 's3-42', category: 'Std 3: Word Roots', term: 'stern/o', definition: 'sternum' },
+            { id: 's3-43', category: 'Std 3: Word Roots', term: 'styl/o', definition: 'styloid process' },
+            { id: 's3-44', category: 'Std 3: Word Roots', term: 'synovi/o', definition: 'synovial membrane, synovial fluid' },
+            { id: 's3-45', category: 'Std 3: Word Roots', term: 'tars/o', definition: 'ankle' },
+            { id: 's3-46', category: 'Std 3: Word Roots', term: 'thorac/o', definition: 'chest' },
+            { id: 's3-47', category: 'Std 3: Word Roots', term: 'tibi/o', definition: 'tibia; lower leg bone' },
+            { id: 's3-48', category: 'Std 3: Word Roots', term: 'uln/o', definition: 'ulna' },
+            { id: 's3-49', category: 'Std 3: Word Roots', term: 'vertebr/o', definition: 'vertebra, spine' },
+
+            // Standard 4: Suffixes (6)
+            { id: 's4-1', category: 'Std 4: Suffixes', term: '-centesis', definition: 'surgical puncture' },
+            { id: 's4-2', category: 'Std 4: Suffixes', term: '-clast', definition: 'destructive cell' },
+            { id: 's4-3', category: 'Std 4: Suffixes', term: '-desis', definition: 'surgical union' },
+            { id: 's4-4', category: 'Std 4: Suffixes', term: '-malacia', definition: 'softening' },
+            { id: 's4-5', category: 'Std 4: Suffixes', term: '-physis', definition: 'growth' },
+            { id: 's4-6', category: 'Std 4: Suffixes', term: '-poeisis', definition: 'formation, production' },
+
+            // Standard 5: Diseases, Disorders, Procedures, Treatments, Diagnostic Tests (39)
+            { id: 's5-1', category: 'Std 5: Clinical Terms', term: 'acromegaly', definition: 'enlargement of the extremities' },
+            { id: 's5-2', category: 'Std 5: Clinical Terms', term: 'ankylosis', definition: 'condition of crooked, bent, or stiff' },
+            { id: 's5-3', category: 'Std 5: Clinical Terms', term: 'arthralgia', definition: 'joint pain' },
+            { id: 's5-4', category: 'Std 5: Clinical Terms', term: 'arthritis', definition: 'inflammation of a joint' },
+            { id: 's5-5', category: 'Std 5: Clinical Terms', term: 'arthrocentesis', definition: 'surgical puncture to remove fluid from the joint' },
+            { id: 's5-6', category: 'Std 5: Clinical Terms', term: 'arthrodesis', definition: 'surgical union of the joint; fusing of a joint' },
+            { id: 's5-7', category: 'Std 5: Clinical Terms', term: 'arthrography', definition: 'the process of recording pictures of a joint' },
+            { id: 's5-8', category: 'Std 5: Clinical Terms', term: 'arthroplasty', definition: 'repair of a joint' },
+            { id: 's5-9', category: 'Std 5: Clinical Terms', term: 'arthroscope', definition: 'instrument to view a joint' },
+            { id: 's5-10', category: 'Std 5: Clinical Terms', term: 'arthroscopy', definition: 'procedure to view a joint' },
+            { id: 's5-11', category: 'Std 5: Clinical Terms', term: 'calcaneal', definition: 'pertaining to the calcaneus (heel bone)' },
+            { id: 's5-12', category: 'Std 5: Clinical Terms', term: 'carpals', definition: 'wrist bones' },
+            { id: 's5-13', category: 'Std 5: Clinical Terms', term: 'chondrectomy', definition: 'removal of cartilage' },
+            { id: 's5-14', category: 'Std 5: Clinical Terms', term: 'chondrocyte', definition: 'cartilage cell' },
+            { id: 's5-15', category: 'Std 5: Clinical Terms', term: 'chondromalacia', definition: 'softening of the cartilage' },
+            { id: 's5-16', category: 'Std 5: Clinical Terms', term: 'craniotomy', definition: 'incision into the cranium/skull' },
+            { id: 's5-17', category: 'Std 5: Clinical Terms', term: 'costal', definition: 'pertaining to ribs' },
+            { id: 's5-18', category: 'Std 5: Clinical Terms', term: 'cribriform', definition: 'sieve-like plate' },
+            { id: 's5-19', category: 'Std 5: Clinical Terms', term: 'intracranial', definition: 'within the skull' },
+            { id: 's5-20', category: 'Std 5: Clinical Terms', term: 'kyphosis', definition: 'abnormal curvature; hump of the spine' },
+            { id: 's5-21', category: 'Std 5: Clinical Terms', term: 'laminectomy', definition: 'removal/excision of the vertebral lamina' },
+            { id: 's5-22', category: 'Std 5: Clinical Terms', term: 'ligament', definition: 'band/sheet of connective tissue connecting 2 or more bones' },
+            { id: 's5-23', category: 'Std 5: Clinical Terms', term: 'lordosis', definition: 'an abnormal curvature of the lumbar spine (sway back)' },
+            { id: 's5-24', category: 'Std 5: Clinical Terms', term: 'metacarpal', definition: 'relating to the metacarpal bones' },
+            { id: 's5-25', category: 'Std 5: Clinical Terms', term: 'metatarsal', definition: 'relating to the metatarsal bones' },
+            { id: 's5-26', category: 'Std 5: Clinical Terms', term: 'myelofibrosis', definition: 'condition of fibers in the bone marrow' },
+            { id: 's5-27', category: 'Std 5: Clinical Terms', term: 'orthopedic', definition: 'branch of medicine dealing with the correction of deformities of bones or muscles' },
+            { id: 's5-28', category: 'Std 5: Clinical Terms', term: 'ossicles', definition: 'small bones of the middle ear' },
+            { id: 's5-29', category: 'Std 5: Clinical Terms', term: 'osteoarthritis', definition: 'degenerative joint disease' },
+            { id: 's5-30', category: 'Std 5: Clinical Terms', term: 'osteoblast', definition: 'bone-forming cell' },
+            { id: 's5-31', category: 'Std 5: Clinical Terms', term: 'osteoclast', definition: 'bone-destroying cell' },
+            { id: 's5-32', category: 'Std 5: Clinical Terms', term: 'osteocyte', definition: 'mature bone cell' },
+            { id: 's5-33', category: 'Std 5: Clinical Terms', term: 'osteoma', definition: 'bone tumor' },
+            { id: 's5-34', category: 'Std 5: Clinical Terms', term: 'osteomalacia', definition: 'softening of the bones' },
+            { id: 's5-35', category: 'Std 5: Clinical Terms', term: 'osteomyelitis', definition: 'inflammation of bone or bone marrow' },
+            { id: 's5-36', category: 'Std 5: Clinical Terms', term: 'osteoporosis', definition: 'loss of bone density' },
+            { id: 's5-37', category: 'Std 5: Clinical Terms', term: 'patellar', definition: 'pertaining to the patella' },
+            { id: 's5-38', category: 'Std 5: Clinical Terms', term: 'scoliosis', definition: 'condition of lateral curvature of the spine' },
+            { id: 's5-39', category: 'Std 5: Clinical Terms', term: 'vertebral', definition: 'pertaining to the vertebral column' }
+        ];
+
+        // =========================================================================
+        // 2. NAVIGATION & GLOBAL MASTERY STATE
+        // =========================================================================
+        let masteredIds = new Set(JSON.parse(localStorage.getItem('medterm_s5_mastered') || '[]'));
+
+        function updateMasteryUI() {
+            localStorage.setItem('medterm_s5_mastered', JSON.stringify([...masteredIds]));
+            document.getElementById('header-mastered-count').textContent = masteredIds.size;
+            document.getElementById('header-total-count').textContent = strand5Data.length;
+        }
+
+        function switchTab(tabName) {
+            // Hide all views
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+
+            // Update active button style
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-300', 'hover:bg-navy-800', 'hover:text-white');
+            });
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.remove('text-slate-300', 'hover:bg-navy-800', 'hover:text-white');
+            activeBtn.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+
+            if (tabName === 'matching' && document.getElementById('match-terms-col').children.length === 0) {
+                startNewMatchRound();
+            }
+        }
+
+        // =========================================================================
+        // 3. TAB 1: STUDY GUIDE LOGIC
+        // =========================================================================
+        let currentStudyFilter = 'ALL';
+        let blurDefinitions = false;
+
+        function setStudyFilter(filter) {
+            currentStudyFilter = filter;
+            document.querySelectorAll('.study-filter-btn').forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.className = 'study-filter-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-navy-900 text-white';
+                } else {
+                    btn.className = 'study-filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
+                }
+            });
+            renderStudyGuide();
+        }
+
+        function toggleSelfTestBlur() {
+            blurDefinitions = !blurDefinitions;
+            const btn = document.getElementById('toggle-blur-btn');
+            if (blurDefinitions) {
+                btn.innerHTML = `<i class="fa-solid fa-eye text-teal-600"></i><span>Show All Definitions</span>`;
+                btn.classList.add('bg-teal-50', 'border-teal-300', 'text-teal-900');
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-eye-slash text-teal-600"></i><span>Hide Definitions (Self-Test)</span>`;
+                btn.classList.remove('bg-teal-50', 'border-teal-300', 'text-teal-900');
+            }
+            renderStudyGuide();
+        }
+
+        function renderStudyGuide() {
+            const query = document.getElementById('study-search').value.toLowerCase().trim();
+            const grid = document.getElementById('study-grid');
+
+            const filtered = strand5Data.filter(item => {
+                const matchesCat = currentStudyFilter === 'ALL' || item.category === currentStudyFilter;
+                const matchesQuery = item.term.toLowerCase().includes(query) || item.definition.toLowerCase().includes(query);
+                return matchesCat && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white rounded-2xl p-10 text-center border border-slate-200">
+                        <i class="fa-solid fa-folder-open text-3xl text-slate-300 mb-2"></i>
+                        <p class="text-slate-500 font-medium">No Strand 5 terms matched "${query}".</p>
+                    </div>`;
+                return;
+            }
+
+            const badgeColors = {
+                'Std 1: Abbreviations': 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                'Std 2: Prefixes': 'bg-purple-50 text-purple-700 border-purple-200',
+                'Std 3: Word Roots': 'bg-teal-50 text-teal-700 border-teal-200',
+                'Std 4: Suffixes': 'bg-amber-50 text-amber-800 border-amber-200',
+                'Std 5: Clinical Terms': 'bg-sky-50 text-sky-700 border-sky-200'
+            };
+
+            grid.innerHTML = filtered.map(item => {
+                const isMastered = masteredIds.has(item.id);
+                return `
+                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2.5">
+                            <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${badgeColors[item.category]}">${item.category}</span>
+                            <button onclick="toggleStudyMastery('${item.id}')" title="Toggle Mastered Status" class="text-sm ${isMastered ? 'text-emerald-600' : 'text-slate-300 hover:text-slate-400'}">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-navy-900 font-mono">${item.term}</h3>
+                    </div>
+                    <div onclick="this.querySelector('.def-text').classList.remove('blur-sm', 'select-none')" class="mt-3 pt-3 border-t border-slate-100 ${blurDefinitions ? 'cursor-pointer' : ''}">
+                        <p class="def-text text-sm text-slate-600 font-medium transition ${blurDefinitions ? 'blur-sm select-none' : ''}">${item.definition}</p>
+                        ${blurDefinitions ? '<span class="text-[10px] text-teal-600 font-semibold block mt-1">Click to peek</span>' : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleStudyMastery(id) {
+            if (masteredIds.has(id)) {
+                masteredIds.delete(id);
+            } else {
+                masteredIds.add(id);
+            }
+            updateMasteryUI();
+            renderStudyGuide();
+        }
+
+        // =========================================================================
+        // 4. TAB 2: INTERACTIVE FLASHCARDS LOGIC
+        // =========================================================================
+        let fcDeck = [];
+        let fcIndex = 0;
+        let fcFlipped = false;
+
+        function initFlashcardDeck() {
+            const filter = document.getElementById('fc-category-select').value;
+            if (filter === 'ALL') {
+                fcDeck = [...strand5Data];
+            } else if (filter === 'STILL_LEARNING') {
+                fcDeck = strand5Data.filter(item => !masteredIds.has(item.id));
+                if (fcDeck.length === 0) {
+                    fcDeck = [...strand5Data];
+                }
+            } else if (filter === 'AFFIXES') {
+                fcDeck = strand5Data.filter(item => item.category === 'Std 2: Prefixes' || item.category === 'Std 4: Suffixes');
+            } else {
+                fcDeck = strand5Data.filter(item => item.category === filter);
+            }
+            fcIndex = 0;
+            fcFlipped = false;
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            if (fcDeck.length === 0) return;
+            const card = fcDeck[fcIndex];
+            const inner = document.getElementById('fc-inner');
+
+            if (fcFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+
+            document.getElementById('fc-counter').textContent = `Card ${fcIndex + 1} of ${fcDeck.length}`;
+            document.getElementById('fc-front-cat').textContent = card.category;
+            document.getElementById('fc-front-text').textContent = card.term;
+            document.getElementById('fc-back-term').textContent = card.term;
+            document.getElementById('fc-back-text').textContent = card.definition;
+
+            const isMastered = masteredIds.has(card.id);
+            const badge = document.getElementById('fc-status-badge');
+            if (isMastered) {
+                badge.textContent = 'Mastered';
+                badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800';
+            } else {
+                badge.textContent = 'Still Learning';
+                badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+            }
+        }
+
+        function flipFlashcard() {
+            fcFlipped = !fcFlipped;
+            renderFlashcard();
+        }
+
+        function nextFlashcard() {
+            fcFlipped = false;
+            fcIndex = (fcIndex + 1) % fcDeck.length;
+            renderFlashcard();
+        }
+
+        function prevFlashcard() {
+            fcFlipped = false;
+            fcIndex = (fcIndex - 1 + fcDeck.length) % fcDeck.length;
+            renderFlashcard();
+        }
+
+        function shuffleFlashcards() {
+            for (let i = fcDeck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [fcDeck[i], fcDeck[j]] = [fcDeck[j], fcDeck[i]];
+            }
+            fcIndex = 0;
+            fcFlipped = false;
+            renderFlashcard();
+        }
+
+        function markFlashcard(isMastered) {
+            const card = fcDeck[fcIndex];
+            if (isMastered) {
+                masteredIds.add(card.id);
+            } else {
+                masteredIds.delete(card.id);
+            }
+            updateMasteryUI();
+            nextFlashcard();
+        }
+
+        function resetMastery() {
+            masteredIds.clear();
+            updateMasteryUI();
+            renderFlashcard();
+            renderStudyGuide();
+        }
+
+        // Keyboard shortcuts for flashcards
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('view-flashcards').classList.contains('hidden')) return;
+            if (e.code === 'Space') {
+                e.preventDefault();
+                flipFlashcard();
+            } else if (e.code === 'ArrowRight') {
+                nextFlashcard();
+            } else if (e.code === 'ArrowLeft') {
+                prevFlashcard();
+            }
+        });
+
+        // =========================================================================
+        // 5. TAB 3: WORD-BUILDING LAB LOGIC
+        // =========================================================================
+        const wordBuilderChallenges = [
+            {
+                definition: 'surgical puncture to remove fluid from the joint',
+                hint: 'Requires: Combining Form (joint) + Suffix (surgical puncture)',
+                parts: ['arthr/o', '-centesis'],
+                distractors: ['oste/o', 'chondr/o', '-desis', '-malacia'],
+                correctSpelling: 'arthrocentesis',
+                spellingOptions: ['arthrocentesis', 'arthrcentesis', 'arthrocentisis'],
+                explanation: 'arthr/o (joint) + -centesis (surgical puncture). Because -centesis begins with a consonant (c), the combining vowel "o" is kept.'
+            },
+            {
+                definition: 'softening of the cartilage',
+                hint: 'Requires: Combining Form (cartilage) + Suffix (softening)',
+                parts: ['chondr/o', '-malacia'],
+                distractors: ['cost/o', 'crani/o', '-physis', '-clast'],
+                correctSpelling: 'chondromalacia',
+                spellingOptions: ['chondromalacia', 'chondrmalacia', 'chondromalasia'],
+                explanation: 'chondr/o (cartilage) + -malacia (softening). Keep the combining vowel "o" because -malacia starts with a consonant.'
+            },
+            {
+                definition: 'inflammation of bone or bone marrow',
+                hint: 'Requires: Root (bone) + Root (bone marrow) + Suffix (inflammation)',
+                parts: ['oste/o', 'myel/o', '-itis'],
+                distractors: ['arthr/o', 'spondyl/o', '-osis', '-oma'],
+                correctSpelling: 'osteomyelitis',
+                spellingOptions: ['osteomyelitis', 'ostemyelitis', 'osteomyeloitis'],
+                explanation: 'oste/o (bone) + myel/o (bone marrow) + -itis (inflammation). Keep the "o" between two roots (oste/o + myel), but drop the "o" before the vowel suffix -itis!'
+            },
+            {
+                definition: 'surgical union of the joint; fusing of a joint',
+                hint: 'Requires: Combining Form (joint) + Suffix (surgical union)',
+                parts: ['arthr/o', '-desis'],
+                distractors: ['ankyl/o', 'lamin/o', '-centesis', '-plasty'],
+                correctSpelling: 'arthrodesis',
+                spellingOptions: ['arthrodesis', 'arthrdesis', 'arthrodiesis'],
+                explanation: 'arthr/o (joint) + -desis (surgical union). The combining vowel "o" is retained before the consonant suffix -desis.'
+            },
+            {
+                definition: 'bone-destroying cell',
+                hint: 'Requires: Combining Form (bone) + Suffix (destructive cell)',
+                parts: ['oste/o', '-clast'],
+                distractors: ['chondr/o', 'blast', '-cyte', '-physis'],
+                correctSpelling: 'osteoclast',
+                spellingOptions: ['osteoclast', 'osteclast', 'osteoblast'],
+                explanation: 'oste/o (bone) + -clast (destructive cell). Keep the combining vowel "o" before -clast.'
+            },
+            {
+                definition: 'loss of bone density (condition of pores in bone)',
+                hint: 'Requires: Combining Form (bone) + Root (pore) + Suffix (condition)',
+                parts: ['oste/o', 'por/o', '-osis'],
+                distractors: ['myel/o', 'orth/o', '-malacia', '-oma'],
+                correctSpelling: 'osteoporosis',
+                spellingOptions: ['osteoporosis', 'osteoporoosis', 'osteporosis'],
+                explanation: 'oste/o (bone) + por/o (pore, porous) + -osis (condition). Keep "o" between roots; drop "o" before vowel suffix -osis.'
+            },
+            {
+                definition: 'removal/excision of the vertebral lamina',
+                hint: 'Requires: Combining Form (vertebral lamina) + Suffix (removal/excision)',
+                parts: ['lamin/o', '-ectomy'],
+                distractors: ['lumb/o', 'crani/o', '-tomy', '-desis'],
+                correctSpelling: 'laminectomy',
+                spellingOptions: ['laminectomy', 'laminoectomy', 'laminotomy'],
+                explanation: 'lamin/o (vertebral lamina) + -ectomy (removal/excision). Drop the combining vowel "o" because -ectomy starts with a vowel.'
+            },
+            {
+                definition: 'incision into the cranium/skull',
+                hint: 'Requires: Combining Form (cranium, skull) + Suffix (incision)',
+                parts: ['crani/o', '-tomy'],
+                distractors: ['cervic/o', 'cost/o', '-ectomy', '-plasty'],
+                correctSpelling: 'craniotomy',
+                spellingOptions: ['craniotomy', 'cranitomy', 'craniectomy'],
+                explanation: 'crani/o (cranium/skull) + -tomy (to cut into; incision). Keep the combining vowel "o" before the consonant suffix -tomy.'
+            },
+            {
+                definition: 'condition of lateral curvature of the spine',
+                hint: 'Requires: Combining Form (crooked, curved) + Suffix (condition)',
+                parts: ['scoli/o', '-osis'],
+                distractors: ['kyph/o', 'lord/o', '-desis', '-malacia'],
+                correctSpelling: 'scoliosis',
+                spellingOptions: ['scoliosis', 'scolioosis', 'kyphosis'],
+                explanation: 'scoli/o (crooked, curved) + -osis (condition). Drop the "o" before -osis.'
+            },
+            {
+                definition: 'abnormal curvature; hump of the spine',
+                hint: 'Requires: Combining Form (abnormal curvature; hump) + Suffix (condition)',
+                parts: ['kyph/o', '-osis'],
+                distractors: ['lord/o', 'scoli/o', '-itis', '-algia'],
+                correctSpelling: 'kyphosis',
+                spellingOptions: ['kyphosis', 'kyphoosis', 'lordosis'],
+                explanation: 'kyph/o (abnormal curvature; hump of the spine) + -osis (condition).'
+            },
+            {
+                definition: 'an abnormal curvature of the lumbar spine (sway back)',
+                hint: 'Requires: Combining Form (curve, swayback) + Suffix (condition)',
+                parts: ['lord/o', '-osis'],
+                distractors: ['lumb/o', 'spondyl/o', '-malacia', '-itis'],
+                correctSpelling: 'lordosis',
+                spellingOptions: ['lordosis', 'lordoosis', 'lumbosis'],
+                explanation: 'lord/o (curve, swayback) + -osis (condition).'
+            },
+            {
+                definition: 'softening of the bones',
+                hint: 'Requires: Combining Form (bone) + Suffix (softening)',
+                parts: ['oste/o', '-malacia'],
+                distractors: ['chondr/o', 'arthr/o', '-porosis', '-clast'],
+                correctSpelling: 'osteomalacia',
+                spellingOptions: ['osteomalacia', 'ostemalacia', 'osteomalasia'],
+                explanation: 'oste/o (bone) + -malacia (softening). Keep the combining vowel "o" before -malacia.'
+            },
+            {
+                definition: 'joint pain',
+                hint: 'Requires: Combining Form (joint) + Suffix (pain)',
+                parts: ['arthr/o', '-algia'],
+                distractors: ['oste/o', 'burs/o', '-itis', '-desis'],
+                correctSpelling: 'arthralgia',
+                spellingOptions: ['arthralgia', 'arthroalgia', 'arthritis'],
+                explanation: 'arthr/o (joint) + -algia (pain). Drop the combining vowel "o" because -algia begins with a vowel.'
+            },
+            {
+                definition: 'bone-forming cell',
+                hint: 'Requires: Combining Form (bone) + Root/Suffix (embryonic; tissue building cell)',
+                parts: ['oste/o', 'blast'],
+                distractors: ['chondr/o', 'myel/o', '-clast', '-cyte'],
+                correctSpelling: 'osteoblast',
+                spellingOptions: ['osteoblast', 'osteblast', 'osteoclast'],
+                explanation: 'oste/o (bone) + blast (embryonic; tissue building cell). Keep the combining vowel "o".'
+            },
+            {
+                definition: 'condition of crooked, bent, or stiff',
+                hint: 'Requires: Combining Form (stiff, crooked, bent) + Suffix (condition)',
+                parts: ['ankyl/o', '-osis'],
+                distractors: ['scoli/o', 'orth/o', '-desis', '-plasty'],
+                correctSpelling: 'ankylosis',
+                spellingOptions: ['ankylosis', 'ankyloosis', 'ankylodesis'],
+                explanation: 'ankyl/o (stiff, crooked, bent) + -osis (condition).'
+            },
+            {
+                definition: 'within the skull',
+                hint: 'Requires: Prefix (within) + Root (cranium/skull) + Suffix (pertaining to)',
+                parts: ['intra-', 'crani/o', '-al'],
+                distractors: ['hemi-', 'cervic/o', '-tomy', '-osis'],
+                correctSpelling: 'intracranial',
+                spellingOptions: ['intracranial', 'intracranioal', 'hemicranial'],
+                explanation: 'intra- (within) + crani/o (skull) + -al (pertaining to). Drop the "o" before -al.'
+            }
+        ];
+
+        let wbIndex = 0;
+        let wbScore = 0;
+        let wbSelectedParts = [];
+        let wbSolvedCurrent = false;
+
+        function loadBuilderChallenge() {
+            const challenge = wordBuilderChallenges[wbIndex];
+            wbSelectedParts = [];
+            wbSolvedCurrent = false;
+
+            document.getElementById('wb-progress').textContent = `${wbIndex + 1} / ${wordBuilderChallenges.length}`;
+            document.getElementById('wb-target-def').textContent = challenge.definition;
+            document.getElementById('wb-target-hint').textContent = challenge.hint;
+            document.getElementById('wb-spelling-step').classList.add('hidden');
+            document.getElementById('wb-feedback').classList.add('hidden');
+            document.getElementById('wb-next-btn').classList.add('hidden');
+
+            renderBuilderTray();
+
+            // Shuffle bank options
+            const bankParts = [...challenge.parts, ...challenge.distractors].sort(() => Math.random() - 0.5);
+            const bankEl = document.getElementById('wb-bank');
+            bankEl.innerHTML = bankParts.map(part => `
+                <button onclick="addPartToTray('${part}')" class="p-3 rounded-xl bg-white border-2 border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 text-navy-900 font-mono font-bold text-sm shadow-sm transition text-center">
+                    ${part}
+                </button>
+            `).join('');
+        }
+
+        function renderBuilderTray() {
+            const tray = document.getElementById('wb-tray');
+            if (wbSelectedParts.length === 0) {
+                tray.innerHTML = `<span class="text-sm text-slate-400 italic">Click word parts from the bank below...</span>`;
+                return;
+            }
+            tray.innerHTML = wbSelectedParts.map((part, idx) => `
+                <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-navy-900 text-white font-mono font-bold text-sm shadow-sm">
+                    ${part}
+                    <button onclick="removePartFromTray(${idx})" class="text-slate-400 hover:text-rose-400 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                </span>
+                ${idx < wbSelectedParts.length - 1 ? '<span class="text-slate-400 font-bold">+</span>' : ''}
+            `).join('');
+        }
+
+        function addPartToTray(part) {
+            if (wbSolvedCurrent) return;
+            const challenge = wordBuilderChallenges[wbIndex];
+            if (wbSelectedParts.length >= challenge.parts.length) return;
+
+            wbSelectedParts.push(part);
+            renderBuilderTray();
+
+            if (wbSelectedParts.length === challenge.parts.length) {
+                const isOrderCorrect = wbSelectedParts.every((val, i) => val === challenge.parts[i]);
+                const fb = document.getElementById('wb-feedback');
+                if (isOrderCorrect) {
+                    fb.className = 'mt-5 p-4 rounded-xl border border-teal-200 bg-teal-50 text-teal-900 text-sm font-medium';
+                    fb.innerHTML = `<i class="fa-solid fa-circle-check text-teal-600 mr-1.5"></i> Correct word parts! Now complete Step 3 above to apply Strand 1 combining rules.`;
+                    fb.classList.remove('hidden');
+                    showSpellingStep(challenge);
+                } else {
+                    fb.className = 'mt-5 p-4 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-sm font-medium animate-shake';
+                    fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1.5"></i> Not quite! Check the order or meanings of those word parts and try again.`;
+                    fb.classList.remove('hidden');
+                }
+            }
+        }
+
+        function removePartFromTray(idx) {
+            if (wbSolvedCurrent) return;
+            wbSelectedParts.splice(idx, 1);
+            document.getElementById('wb-spelling-step').classList.add('hidden');
+            document.getElementById('wb-feedback').classList.add('hidden');
+            renderBuilderTray();
+        }
+
+        function clearBuilderTray() {
+            if (wbSolvedCurrent) return;
+            wbSelectedParts = [];
+            document.getElementById('wb-spelling-step').classList.add('hidden');
+            document.getElementById('wb-feedback').classList.add('hidden');
+            renderBuilderTray();
+        }
+
+        function showSpellingStep(challenge) {
+            const stepDiv = document.getElementById('wb-spelling-step');
+            const optionsDiv = document.getElementById('wb-spelling-options');
+            const shuffled = [...challenge.spellingOptions].sort(() => Math.random() - 0.5);
+
+            optionsDiv.innerHTML = shuffled.map(opt => `
+                <button onclick="checkFinalSpelling('${opt}')" class="p-3.5 rounded-xl bg-white border-2 border-teal-300 hover:bg-teal-600 hover:text-white hover:border-teal-600 text-navy-900 font-mono font-bold text-base transition shadow-sm">
+                    ${opt}
+                </button>
+            `).join('');
+            stepDiv.classList.remove('hidden');
+        }
+
+        function checkFinalSpelling(chosen) {
+            if (wbSolvedCurrent) return;
+            const challenge = wordBuilderChallenges[wbIndex];
+            const fb = document.getElementById('wb-feedback');
+
+            if (chosen === challenge.correctSpelling) {
+                wbSolvedCurrent = true;
+                wbScore++;
+                document.getElementById('wb-score').textContent = wbScore;
+                fb.className = 'mt-5 p-4 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 text-sm';
+                fb.innerHTML = `
+                    <div class="font-bold text-base text-emerald-800 mb-1"><i class="fa-solid fa-star text-amber-500 mr-1"></i> Excellent! <span class="font-mono underline">${challenge.correctSpelling}</span></div>
+                    <p>${challenge.explanation}</p>
+                `;
+                document.getElementById('wb-next-btn').classList.remove('hidden');
+            } else {
+                fb.className = 'mt-5 p-4 rounded-xl border border-rose-300 bg-rose-50 text-rose-900 text-sm animate-shake';
+                fb.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1.5"></i> Check the combining vowel rule! Remember: drop "o" before a suffix starting with a vowel; keep "o" before a suffix starting with a consonant.`;
+            }
+        }
+
+        function nextBuilderChallenge() {
+            wbIndex = (wbIndex + 1) % wordBuilderChallenges.length;
+            loadBuilderChallenge();
+        }
+
+        // =========================================================================
+        // 6. TAB 4: SPEED MATCHING GAME LOGIC
+        // =========================================================================
+        let matchPairs = [];
+        let selectedTermId = null;
+        let selectedDefId = null;
+        let matchedCount = 0;
+        let matchStreak = 0;
+        let matchTimerInterval = null;
+        let matchSeconds = 0;
+
+        function startNewMatchRound() {
+            clearInterval(matchTimerInterval);
+            matchSeconds = 0;
+            matchedCount = 0;
+            selectedTermId = null;
+            selectedDefId = null;
+            document.getElementById('match-timer').textContent = '00:00';
+            document.getElementById('match-complete').classList.add('hidden');
+            document.getElementById('match-board').classList.remove('hidden');
+
+            const filter = document.getElementById('match-filter').value;
+            let pool = filter === 'ALL' ? [...strand5Data] : strand5Data.filter(i => i.category === filter);
+            pool.sort(() => Math.random() - 0.5);
+            matchPairs = pool.slice(0, 6);
+
+            const termsCol = document.getElementById('match-terms-col');
+            const defsCol = document.getElementById('match-defs-col');
+
+            const shuffledTerms = [...matchPairs].sort(() => Math.random() - 0.5);
+            const shuffledDefs = [...matchPairs].sort(() => Math.random() - 0.5);
+
+            termsCol.innerHTML = shuffledTerms.map(item => `
+                <button id="m-term-${item.id}" onclick="selectMatchTerm('${item.id}')" class="match-term-btn w-full text-left p-4 rounded-xl bg-white border-2 border-slate-200 hover:border-teal-400 font-mono font-bold text-navy-900 text-sm sm:text-base shadow-sm transition">
+                    ${item.term}
+                </button>
+            `).join('');
+
+            defsCol.innerHTML = shuffledDefs.map(item => `
+                <button id="m-def-${item.id}" onclick="selectMatchDef('${item.id}')" class="match-def-btn w-full text-left p-4 rounded-xl bg-white border-2 border-slate-200 hover:border-teal-400 text-slate-700 font-medium text-sm shadow-sm transition">
+                    ${item.definition}
+                </button>
+            `).join('');
+
+            matchTimerInterval = setInterval(() => {
+                matchSeconds++;
+                const mins = String(Math.floor(matchSeconds / 60)).padStart(2, '0');
+                const secs = String(matchSeconds % 60).padStart(2, '0');
+                document.getElementById('match-timer').textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function selectMatchTerm(id) {
+            const btn = document.getElementById(`m-term-${id}`);
+            if (btn.disabled) return;
+
+            document.querySelectorAll('.match-term-btn').forEach(b => {
+                if (!b.disabled) b.classList.remove('border-teal-600', 'bg-teal-50', 'ring-2', 'ring-teal-200');
+            });
+            selectedTermId = id;
+            btn.classList.add('border-teal-600', 'bg-teal-50', 'ring-2', 'ring-teal-200');
+            evaluateMatchPair();
+        }
+
+        function selectMatchDef(id) {
+            const btn = document.getElementById(`m-def-${id}`);
+            if (btn.disabled) return;
+
+            document.querySelectorAll('.match-def-btn').forEach(b => {
+                if (!b.disabled) b.classList.remove('border-teal-600', 'bg-teal-50', 'ring-2', 'ring-teal-200');
+            });
+            selectedDefId = id;
+            btn.classList.add('border-teal-600', 'bg-teal-50', 'ring-2', 'ring-teal-200');
+            evaluateMatchPair();
+        }
+
+        function evaluateMatchPair() {
+            if (!selectedTermId || !selectedDefId) return;
+
+            const termBtn = document.getElementById(`m-term-${selectedTermId}`);
+            const defBtn = document.getElementById(`m-def-${selectedDefId}`);
+
+            if (selectedTermId === selectedDefId) {
+                // Correct Match
+                termBtn.disabled = true;
+                defBtn.disabled = true;
+                termBtn.className = 'match-term-btn w-full text-left p-4 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-800 font-mono font-bold text-sm sm:text-base opacity-60 cursor-default';
+                defBtn.className = 'match-def-btn w-full text-left p-4 rounded-xl bg-emerald-50 border-2 border-emerald-400 text-emerald-800 font-medium text-sm opacity-60 cursor-default';
+                
+                matchedCount++;
+                matchStreak++;
+                document.getElementById('match-streak').textContent = matchStreak;
+
+                if (matchedCount === matchPairs.length) {
+                    clearInterval(matchTimerInterval);
+                    document.getElementById('match-final-time').textContent = document.getElementById('match-timer').textContent;
+                    setTimeout(() => {
+                        document.getElementById('match-board').classList.add('hidden');
+                        document.getElementById('match-complete').classList.remove('hidden');
+                    }, 400);
+                }
+            } else {
+                // Wrong Match
+                matchStreak = 0;
+                document.getElementById('match-streak').textContent = matchStreak;
+                termBtn.classList.add('border-rose-500', 'bg-rose-50', 'animate-shake');
+                defBtn.classList.add('border-rose-500', 'bg-rose-50', 'animate-shake');
+                setTimeout(() => {
+                    termBtn.classList.remove('border-rose-500', 'bg-rose-50', 'animate-shake', 'border-teal-600', 'bg-teal-50', 'ring-2', 'ring-teal-200');
+                    defBtn.classList.remove('border-rose-500', 'bg-rose-50', 'animate-shake', 'border-teal-600', 'bg-teal-50', 'ring-2', 'ring-teal-200');
+                }, 450);
+            }
+
+            selectedTermId = null;
+            selectedDefId = null;
+        }
+
+        // =========================================================================
+        // 7. TAB 5: STATE EXAM PRACTICE QUIZ (18 QUESTIONS)
+        // =========================================================================
+        const quizQuestions = [
+            {
+                q: 'An orthopedic surgeon performs an "arthrocentesis" on a patient’s swollen knee. What did the surgeon do?',
+                options: [
+                    'Surgically fused the bones of the knee joint together',
+                    'Performed a surgical puncture to remove fluid from the joint',
+                    'Recorded X-ray images of the joint space',
+                    'Replaced the damaged knee joint with a prosthesis'
+                ],
+                answer: 1,
+                rationale: 'arthr/o means joint and -centesis means surgical puncture (to remove fluid).'
+            },
+            {
+                q: 'Which medical abbreviation represents the conservative sports-medicine treatment protocol: "protection, optimal loading, ice, compression, elevation"?',
+                options: ['RICE', 'POLICE', 'ROM', 'ACL'],
+                answer: 1,
+                rationale: 'Standard 1 defines POLICE as protection, optimal loading, ice, compression, elevation.'
+            },
+            {
+                q: 'A patient is diagnosed with "chondromalacia" of the patella. Which condition is present?',
+                options: [
+                    'Inflammation of the kneecap',
+                    'Surgical removal of cartilage',
+                    'Softening of the cartilage',
+                    'Tumor of the cartilage cells'
+                ],
+                answer: 2,
+                rationale: 'chondr/o means cartilage and -malacia means softening.'
+            },
+            {
+                q: 'Which combining form refers to the heel bone?',
+                options: ['carp/o', 'calcane/o', 'clavicul/o', 'cubit/o'],
+                answer: 1,
+                rationale: 'calcane/o means calcaneus (heel bone). carp/o is wrist, clavicul/o is clavicle, and cubit/o is elbow.'
+            },
+            {
+                q: 'What is the function of an "osteoclast"?',
+                options: [
+                    'Bone-forming cell',
+                    'Mature bone cell that maintains tissue',
+                    'Bone-destroying cell (resorbs bone tissue)',
+                    'Cartilage-producing embryonic cell'
+                ],
+                answer: 2,
+                rationale: 'oste/o means bone and -clast means destructive cell.'
+            },
+            {
+                q: 'A chart note reads: "Pt c/o L knee pain; R/O torn MCL and PCL." Which ligaments are being evaluated?',
+                options: [
+                    'Medial collateral ligament and posterior cruciate ligament',
+                    'Lateral collateral ligament and anterior cruciate ligament',
+                    'Medial cruciate ligament and patellar collateral ligament',
+                    'Lower collateral ligament and pelvic cruciate ligament'
+                ],
+                answer: 0,
+                rationale: 'MCL = medial collateral ligament; PCL = posterior cruciate ligament.'
+            },
+            {
+                q: 'Which spinal curvature condition is characterized by an abnormal lateral (side-to-side) curvature of the spine?',
+                options: ['Kyphosis', 'Lordosis', 'Scoliosis', 'Ankylosis'],
+                answer: 2,
+                rationale: 'scoli/o means crooked or curved, and scoliosis is specifically defined in Standard 5 as a condition of lateral curvature of the spine.'
+            },
+            {
+                q: 'To relieve pressure on a spinal nerve root, a neurosurgeon excises the vertebral lamina. Which procedure was performed?',
+                options: ['Craniotomy', 'Laminectomy', 'Arthrodesis', 'Chondrectomy'],
+                answer: 1,
+                rationale: 'lamin/o refers to the vertebral lamina and -ectomy means removal/excision.'
+            },
+            {
+                q: 'Which combining form has TWO meanings in Strand 5: "spinal cord" and "bone marrow"?',
+                options: ['myel/o', 'menisc/o', 'mandibul/o', 'spondyl/o'],
+                answer: 0,
+                rationale: 'Standard 3 defines myel/o as spinal cord, bone marrow.'
+            },
+            {
+                q: 'An elderly patient experiences a hip fracture secondary to "osteoporosis". What is the literal meaning of osteoporosis?',
+                options: [
+                    'Softening of the bones',
+                    'Inflammation of bone and bone marrow',
+                    'Loss of bone density (condition of pores in bone)',
+                    'Degenerative joint disease'
+                ],
+                answer: 2,
+                rationale: 'Standard 5 defines osteoporosis as loss of bone density (from oste/o + por/o + -osis).'
+            },
+            {
+                q: 'Which suffix means "surgical union" (such as fusing two vertebrae or a joint)?',
+                options: ['-centesis', '-desis', '-physis', '-poeisis'],
+                answer: 1,
+                rationale: 'Standard 4 defines -desis as surgical union (e.g., arthrodesis).'
+            },
+            {
+                q: 'A patient presents with "ankylosis" of the shoulder after prolonged immobilization. How would you describe this joint?',
+                options: [
+                    'Excessively loose and hypermobile',
+                    'Crooked, bent, or stiff',
+                    'Filled with excess synovial fluid',
+                    'Softened at the articular cartilage'
+                ],
+                answer: 1,
+                rationale: 'ankyl/o means stiff, crooked, bent; ankylosis is a condition of crooked, bent, or stiff.'
+            },
+            {
+                q: 'Which term refers to the small bones of the middle ear?',
+                options: ['Ossicles', 'Carpals', 'Phalanges', 'Cribriform'],
+                answer: 0,
+                rationale: 'Standard 5 defines ossicles as the small bones of the middle ear.'
+            },
+            {
+                q: 'What does the prefix "hemi-" mean?',
+                options: ['Within', 'Straight', 'One half', 'Against'],
+                answer: 2,
+                rationale: 'Standard 2 lists hemi- as one half.'
+            },
+            {
+                q: 'A physical therapist documents: "Pt is ambulating independently with full ROM in B upper extremities." What does this mean?',
+                options: [
+                    'Patient is bedbound with restricted movement in both arms',
+                    'Patient is walking independently with full range of motion in both arms',
+                    'Patient is ambulating with pain in the left arm only',
+                    'Patient requires surgical repair of bilateral clavicles'
+                ],
+                answer: 1,
+                rationale: 'amb = ambulate/ambulatory; ROM = range of motion; B = bilateral (both sides).'
+            },
+            {
+                q: 'Which combining form refers to the elbow?',
+                options: ['cubit/o', 'cost/o', 'cervic/o', 'crani/o'],
+                answer: 0,
+                rationale: 'cubit/o = elbow; cost/o = rib; cervic/o = neck; crani/o = skull.'
+            },
+            {
+                q: 'An abnormal humpback curvature of the thoracic spine is known as:',
+                options: ['Lordosis', 'Kyphosis', 'Myelofibrosis', 'Acromegaly'],
+                answer: 1,
+                rationale: 'Standard 5 defines kyphosis as abnormal curvature; hump of the spine.'
+            },
+            {
+                q: 'Which term describes an enlargement of the extremities (hands, feet, facial bones)?',
+                options: ['Acromegaly', 'Arthralgia', 'Osteoma', 'Cribriform'],
+                answer: 0,
+                rationale: 'Standard 5 defines acromegaly as enlargement of the extremities.'
+            }
+        ];
+
+        let userQuizAnswers = {};
+        let quizGraded = false;
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = quizQuestions.map((item, qIdx) => {
+                return `
+                <div class="py-6" id="quiz-q-block-${qIdx}">
+                    <div class="flex items-start gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-100 text-navy-900 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">${qIdx + 1}</span>
+                        <div class="flex-1">
+                            <p class="font-bold text-navy-900 text-base leading-snug">${item.q}</p>
+                            <div class="grid grid-cols-1 gap-2.5 mt-3.5">
+                                ${item.options.map((opt, optIdx) => {
+                                    const isSelected = userQuizAnswers[qIdx] === optIdx;
+                                    let btnStyle = 'bg-white border-slate-200 hover:border-teal-400 text-slate-700';
+                                    let iconHtml = `<span class="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[11px] font-bold shrink-0">${String.fromCharCode(65 + optIdx)}</span>`;
+
+                                    if (quizGraded) {
+                                        if (optIdx === item.answer) {
+                                            btnStyle = 'bg-emerald-50 border-emerald-500 text-emerald-900 font-semibold';
+                                            iconHtml = `<i class="fa-solid fa-circle-check text-emerald-600 text-base shrink-0"></i>`;
+                                        } else if (isSelected && optIdx !== item.answer) {
+                                            btnStyle = 'bg-rose-50 border-rose-500 text-rose-900';
+                                            iconHtml = `<i class="fa-solid fa-circle-xmark text-rose-600 text-base shrink-0"></i>`;
+                                        } else {
+                                            btnStyle = 'bg-slate-50 border-slate-200 text-slate-400';
+                                        }
+                                    } else if (isSelected) {
+                                        btnStyle = 'bg-teal-50 border-teal-600 text-navy-900 font-semibold ring-1 ring-teal-600';
+                                        iconHtml = `<span class="w-5 h-5 rounded-full bg-teal-600 text-white flex items-center justify-center text-[11px] font-bold shrink-0">${String.fromCharCode(65 + optIdx)}</span>`;
+                                    }
+
+                                    return `
+                                    <button onclick="selectQuizOption(${qIdx}, ${optIdx})" ${quizGraded ? 'disabled' : ''} class="w-full text-left p-3.5 rounded-xl border-2 transition flex items-center gap-3 text-sm ${btnStyle}">
+                                        ${iconHtml}
+                                        <span>${opt}</span>
+                                    </button>`;
+                                }).join('')}
+                            </div>
+                            ${quizGraded ? `
+                                <div class="mt-3 p-3.5 rounded-xl bg-slate-100 text-xs text-slate-700 border border-slate-200">
+                                    <strong class="text-navy-900">Rationale:</strong> ${item.rationale}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            const answeredCount = Object.keys(userQuizAnswers).length;
+            document.getElementById('quiz-answered-status').textContent = `${answeredCount} of ${quizQuestions.length} questions answered`;
+        }
+
+        function selectQuizOption(qIdx, optIdx) {
+            if (quizGraded) return;
+            userQuizAnswers[qIdx] = optIdx;
+            renderQuiz();
+        }
+
+        function gradeQuiz() {
+            const answeredCount = Object.keys(userQuizAnswers).length;
+            if (answeredCount < quizQuestions.length) {
+                const banner = document.getElementById('quiz-results-banner');
+                banner.className = 'my-6 p-4 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-sm font-medium';
+                banner.innerHTML = `<i class="fa-solid fa-circle-exclamation text-amber-600 mr-1.5"></i> Please answer all ${quizQuestions.length} questions before submitting (${quizQuestions.length - answeredCount} remaining).`;
+                banner.classList.remove('hidden');
+                banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            quizGraded = true;
+            let correctCount = 0;
+            quizQuestions.forEach((q, idx) => {
+                if (userQuizAnswers[idx] === q.answer) correctCount++;
+            });
+
+            const pct = Math.round((correctCount / quizQuestions.length) * 100);
+            const passed = pct >= 74;
+
+            const banner = document.getElementById('quiz-results-banner');
+            banner.className = passed
+                ? 'my-6 p-6 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950'
+                : 'my-6 p-6 rounded-2xl border-2 border-amber-500 bg-amber-50 text-amber-950';
+
+            banner.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider ${passed ? 'bg-emerald-600 text-white' : 'bg-amber-600 text-white'}">
+                            ${passed ? 'Passing Score Achieved (≥74%)' : 'Below State Cut Score (74%)'}
+                        </span>
+                        <h3 class="text-2xl font-extrabold mt-2">You scored ${correctCount} / ${quizQuestions.length} (${pct}%)</h3>
+                        <p class="text-sm mt-1 opacity-90">${passed ? 'Great job! You are ready for Strand 5 questions on Utah CTE Test #704.' : 'Review the rationales below and revisit the Flashcards & Word-Building Lab to boost your score above 74%.'}</p>
+                    </div>
+                    <button onclick="resetQuiz()" class="px-5 py-3 rounded-xl bg-navy-900 text-white font-bold text-sm shrink-0 hover:bg-navy-800 transition">
+                        Retake Exam
+                    </button>
+                </div>
+            `;
+            banner.classList.remove('hidden');
+            document.getElementById('submit-quiz-btn').classList.add('hidden');
+            renderQuiz();
+            banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetQuiz() {
+            userQuizAnswers = {};
+            quizGraded = false;
+            document.getElementById('quiz-results-banner').classList.add('hidden');
+            document.getElementById('submit-quiz-btn').classList.remove('hidden');
+            renderQuiz();
+        }
+
+        // =========================================================================
+        // 8. INITIALIZE APPLICATION ON LOAD
+        // =========================================================================
+        window.onload = function () {
+            updateMasteryUI();
+            renderStudyGuide();
+            initFlashcardDeck();
+            loadBuilderChallenge();
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>
